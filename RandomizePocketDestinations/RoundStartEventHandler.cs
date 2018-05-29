@@ -24,11 +24,29 @@ namespace RandomizePocketDestinations.EventHandlers
 					case Classes.SCP_096:
 					case Classes.SCP_106:
 					//case Classes.SCP_173:
-						this.plugin.SCPSpawnPoints.Add(player.Class.ClassType, player.GetPosition());
+						if (!this.plugin.SCPSpawnPoints.ContainsKey(player.Class.ClassType))
+						{
+							this.plugin.SCPSpawnPoints.Add(player.Class.ClassType, player.GetPosition());
+						}
 						break;
 				}
 			}
 			plugin.Info("SCPSpawnPoints SIZE " + this.plugin.SCPSpawnPoints.Count);
+		}
+	}
+
+	class RoundEndHandler : IEventRoundEnd
+	{
+		private RandomizePocketDestinationsPlugin plugin;
+
+		public RoundEndHandler(Plugin plugin)
+		{
+			this.plugin = (RandomizePocketDestinationsPlugin)plugin;
+		}
+
+		public void OnRoundEnd(Server server, Round round)
+		{
+			this.plugin.SCPSpawnPoints = new System.Collections.Generic.Dictionary<Classes, Vector>();
 		}
 	}
 
@@ -43,14 +61,17 @@ namespace RandomizePocketDestinations.EventHandlers
 
 		public void OnPocketDimensionExit(Vector[] possibleExits, out Vector[] possibleExitsOutput)
 		{
+			plugin.Info("Randomize Pocket Destinations: " + this.plugin.GetConfigBool("randomize_pocket_destinations"));
 			//ConfigSetting randomziePocketDestinations = ConfigManager.Manager.ResolveSetting(this.plugin, "randomize_pocket_destinations");
 			if (this.plugin.GetConfigBool("randomize_pocket_destinations") && this.plugin.SCPSpawnPoints.Count > 0)
 			{
+				plugin.Info("Setting possibleExitOutput to " + this.plugin.SCPSpawnPoints.Count + " custom destinations.");
 				Vector[] destinations = new Vector[this.plugin.SCPSpawnPoints.Count];
 				this.plugin.SCPSpawnPoints.Values.CopyTo(destinations, 0);
 				possibleExitsOutput = destinations;
 			} else
 			{
+				plugin.Info("No custom pocket destinations set.");
 				possibleExitsOutput = possibleExits;
 			}
 		}
