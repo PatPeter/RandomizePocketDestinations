@@ -12,7 +12,7 @@ namespace RandomizePocketDestinations
 		name = "RandomizePocketDestinations",
 		description = "Randomizes pocket dimension locations.",
 		id = "patpeter.randomizepocketdestinations",
-		version = "1.0-build2",
+		version = "1.0-build3",
 		SmodMajor = 2,
 		SmodMinor = 0,
 		SmodRevision = 0
@@ -38,7 +38,7 @@ namespace RandomizePocketDestinations
 			this.AddEventHandler(typeof(IEventRoundEnd), new RoundEndHandler(this), Priority.Highest);
 			this.AddEventHandler(typeof(IEventPocketDimensionExit), new PocketDimensionExitHandler(this), Priority.Highest);
 			// Register config settings
-			this.AddConfig(new Smod2.Config.ConfigSetting("randomize_pocket_destinations", false, Smod2.Config.SettingType.BOOL, true, "Randomzies pocket destinations."));
+			this.AddConfig(new Smod2.Config.ConfigSetting("randomize_pocket_destinations", true, Smod2.Config.SettingType.BOOL, true, "Randomzies pocket destinations."));
 		}
 	}
 }
